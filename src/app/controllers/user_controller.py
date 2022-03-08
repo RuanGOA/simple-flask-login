@@ -44,3 +44,28 @@ def search_user(username):
             http_code=status.HTTP_404_NOT_FOUND,
             message=f'Could not find the user {username}.'
         )
+
+
+def login(request):
+    try:
+        auth_header = request.authorization
+        if not auth_header:
+            raise Exception()
+        
+        username = auth_header.get('username')
+        password = auth_header.get('password')
+
+        token = service.login(username, password)
+
+        return response_factory.make_response(
+            http_code=status.HTTP_201_CREATED,
+            body={
+                'token': token
+            }
+        )
+
+    except Exception as e:
+        return response_factory.make_error(
+            http_code=status.HTTP_404_NOT_FOUND,
+            message=f''
+        )

@@ -35,3 +35,17 @@ def search_user(username):
             http_code=status.HTTP_405_METHOD_NOT_ALLOWED,
             message='Method not allowed.'
         )
+
+
+@user.route('/login', methods=['POST'])
+def login():
+    try:
+        if request.method != 'POST':
+            raise Exception()
+
+        return controller.login(request)
+    except Exception as e:
+        return response_factory.make_error(
+            http_code=status.HTTP_405_METHOD_NOT_ALLOWED,
+            message='Method not allowed.'
+        )
