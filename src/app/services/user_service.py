@@ -1,5 +1,7 @@
 from app.models import user as user_model
 from app.configs.config import JWT_SECRET
+from app.utils import JWT_EXPIRATION_TIME
+from datetime import datetime, timedelta
 import bcrypt
 import jwt
 
@@ -31,9 +33,12 @@ def login(username, password):
     user = user_model.search(username)
     if user:
         if bcrypt.checkpw(password.encode('utf8'), user.get('password')):
-            user.pop('_id', None)
-            user['password'] = user.get('password').decode('utf8')
-            return jwt.encode(user, JWT_SECRET, algorithm='HS256')
+            payload = {
+                'username': user.get('username'),
+                'password': user.get('password').encode('utf8'),
+                'exp': datetime.now() + timedelta(hours=JWT_EXPIRATION_TIME)
+            }
+            return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
         else:
             raise Exception()
     else:
