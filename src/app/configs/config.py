@@ -9,3 +9,5 @@ MONGO_PORT = os.getenv('MONGO_PORT', default=27017)
 MONGO_DATABASE = os.getenv('MONGO_DATABASE', default='test')
 MONGO_USERNAME = os.getenv('MONGO_USERNAME', default=None)
 MONGO_PASSWORD = os.getenv('MONGO_PASSWORD', default=None)
+
+JWT_SECRET = os.getenv('JWT_SECRET', default='secret')
