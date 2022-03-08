@@ -35,7 +35,7 @@ def login(username, password):
         if bcrypt.checkpw(password.encode('utf8'), user.get('password')):
             payload = {
                 'username': user.get('username'),
-                'password': user.get('password').encode('utf8'),
+                'password': user.get('password').decode('utf8'),
                 'exp': datetime.now() + timedelta(hours=JWT_EXPIRATION_TIME)
             }
             return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
