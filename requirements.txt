@@ -3,3 +3,5 @@ flask_api==3.0.post1
 flask-cors==3.0.10
 pymongo==4.0.1
 flask-jwt-extended==4.3.1
+bcrypt==3.2.0
+pyjwt==2.3.0
