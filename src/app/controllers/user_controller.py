@@ -69,3 +69,18 @@ def login(request):
             http_code=status.HTTP_404_NOT_FOUND,
             message=f''
         )
+
+
+def authorized_route(request):
+    try:
+        protected_data = service.authorized_route()
+        
+        return response_factory.make_response(
+            http_code=status.HTTP_201_CREATED,
+            body=protected_data
+        )
+    except Exception as e:
+        return response_factory.make_error(
+            http_code=status.HTTP_404_NOT_FOUND,
+            message=f''
+        )
