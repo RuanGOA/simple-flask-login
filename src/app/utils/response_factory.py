@@ -1,7 +1,6 @@
 import json
 
 from flask import Response
-from flask_api import status
 
 
 def make_response(http_code, body=None):
