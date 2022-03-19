@@ -10,77 +10,43 @@ def create_user(request):
     username = json.loads(request.get_data()).get('username')
     password = json.loads(request.get_data()).get('password')
 
-    try:
-        user = service.create_user(username, password)
+    user = service.create_user(username, password)
 
-        if not user:
-            raise Exception()
-
-        return response_factory.make_response(
-            http_code=status.HTTP_201_CREATED,
-            body=user
-        )
-
-    except Exception:
-        return response_factory.make_error(
-            http_code=status.HTTP_409_CONFLICT,
-            message=f'User {username} already exists.'
-        )
+    return response_factory.make_response(
+        http_code=status.HTTP_201_CREATED,
+        body=user
+    )
 
 
 def search_user(username):
-    try:
-        user = service.search_user(username)
+    user = service.search_user(username)
 
-        if not user:
-            raise Exception()
-
-        return response_factory.make_response(
-            http_code=status.HTTP_201_CREATED,
-            body=user
-        )
-    except Exception:
-        return response_factory.make_error(
-            http_code=status.HTTP_404_NOT_FOUND,
-            message=f'Could not find the user {username}.'
-        )
+    return response_factory.make_response(
+        http_code=status.HTTP_201_CREATED,
+        body=user
+    )
 
 
 def login(request):
-    try:
-        auth_header = request.authorization
-        if not auth_header:
-            raise Exception()
-        
-        username = auth_header.get('username')
-        password = auth_header.get('password')
+    auth_header = request.authorization
 
-        token = service.login(username, password)
+    username = auth_header.get('username')
+    password = auth_header.get('password')
 
-        return response_factory.make_response(
-            http_code=status.HTTP_201_CREATED,
-            body={
-                'token': token
-            }
-        )
+    token = service.login(username, password)
 
-    except Exception as e:
-        return response_factory.make_error(
-            http_code=status.HTTP_404_NOT_FOUND,
-            message=f''
-        )
+    return response_factory.make_response(
+        http_code=status.HTTP_201_CREATED,
+        body={
+            'token': token
+        }
+    )
 
 
-def authorized_route(request):
-    try:
-        protected_data = service.authorized_route()
-        
-        return response_factory.make_response(
-            http_code=status.HTTP_201_CREATED,
-            body=protected_data
-        )
-    except Exception as e:
-        return response_factory.make_error(
-            http_code=status.HTTP_404_NOT_FOUND,
-            message=f''
-        )
+def authorized_route():
+    protected_data = service.authorized_route()
+
+    return response_factory.make_response(
+        http_code=status.HTTP_201_CREATED,
+        body=protected_data
+    )

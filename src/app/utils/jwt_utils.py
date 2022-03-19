@@ -1,11 +1,13 @@
 from app.utils.constants import JWT_EXPIRATION_TIME
 from app.configs.config import JWT_SECRET
+from app.utils import exceptions
 from datetime import datetime, timedelta, timezone
 import jwt
 
 
 def create_token(payload):
-    payload['exp'] = datetime.now(tz=timezone.utc) + timedelta(hours=JWT_EXPIRATION_TIME)
+    payload['exp'] = datetime.now(
+        tz=timezone.utc) + timedelta(hours=JWT_EXPIRATION_TIME)
     return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
 
 
@@ -29,4 +31,4 @@ def get_claims(token, claims=['exp']):
     try:
         return jwt.decode(token, JWT_SECRET, options={'require': claims}, algorithms=['HS256'])
     except jwt.exceptions.InvalidSignatureError as e:
-        pass
+        raise exceptions.InvalidTokenException()

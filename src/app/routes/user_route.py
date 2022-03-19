@@ -5,63 +5,47 @@ from flask_api import status
 
 from app.controllers import user_controller as controller
 from app.utils import response_factory
-from app.utils import check_authorization
+from app.utils import exceptions
+from app.utils.decorators import (
+    check_authorization,
+    exception_handler
+)
 
 user = Blueprint('user', __name__)
 
 
 @user.route('', methods=['POST'])
+@exception_handler
 def create_user():
-    try:
-        if request.method != 'POST':
-            raise Exception()
+    if request.method != 'POST':
+        raise exceptions.MethodNotAllowedException()
 
-        return controller.create_user(request)
-    except Exception as e:
-        return response_factory.make_error(
-            http_code=status.HTTP_405_METHOD_NOT_ALLOWED,
-            message='Method not allowed.'
-        )
+    return controller.create_user(request)
 
 
 @user.route('/<username>', methods=['GET'])
+@exception_handler
 def search_user(username):
-    try:
-        if request.method != 'GET':
-            raise Exception()
+    if request.method != 'GET':
+        raise exceptions.MethodNotAllowedException()
 
-        return controller.search_user(username)
-    except Exception as e:
-        return response_factory.make_error(
-            http_code=status.HTTP_405_METHOD_NOT_ALLOWED,
-            message='Method not allowed.'
-        )
+    return controller.search_user(username)
 
 
 @user.route('/login', methods=['POST'])
+@exception_handler
 def login():
-    try:
-        if request.method != 'POST':
-            raise Exception()
+    if request.method != 'POST':
+        raise exceptions.MethodNotAllowedException()
 
-        return controller.login(request)
-    except Exception as e:
-        return response_factory.make_error(
-            http_code=status.HTTP_405_METHOD_NOT_ALLOWED,
-            message='Method not allowed.'
-        )
+    return controller.login(request)
 
 
 @user.route('/test', methods=['GET'])
+@exception_handler
 @check_authorization
 def authorized_route():
-    try:
-        if request.method != 'GET':
-            raise Exception()
-        
-        return controller.authorized_route(request)
-    except Exception as e:
-        return response_factory.make_error(
-            http_code=status.HTTP_405_METHOD_NOT_ALLOWED,
-            message='Method not allowed.'
-        )
+    if request.method != 'GET':
+        raise exceptions.MethodNotAllowedException()
+
+    return controller.authorized_route()
