@@ -16,8 +16,10 @@ def create(username, password):
 
 
 def update():
+    # TODO: Implement
     pass
 
 
 def delete():
+    # TODO: implement
     pass
